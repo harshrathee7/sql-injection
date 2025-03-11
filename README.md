@@ -97,7 +97,7 @@ Extracts data via external interactions (DNS, HTTP requests).
 ---
 
 ## **4. Bypassing Authentication with SQL Injection**
-### ** Classic Bypass Payloads**  
+### Classic Bypass Payloads  
 - `admin' --`  
 - `' OR '1'='1' --`  
 - `" OR 1=1 #`  
@@ -161,7 +161,7 @@ sqlmap -u "http://example.com/login.php?id=1" --dbs
 - Test SQLi payloads in form fields.  
 
 ---
-### **SQLi Tools & installation **
+### SQLi Tools & installation 
 - **Havij** – GUI-based SQL Injection tool (https://github.com/MyIBGit/Havij-SQL-Injection-tool).  
 - **NoSQLMap** – For NoSQL injection attacks (https://github.com/codingo/NoSQLMap.git).  
 - **BBQSQL** – SQLi testing tool for blind SQL injections (https://github.com/CiscoCXSecurity/bbqsql).  
